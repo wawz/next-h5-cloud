@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    domains: ['bm-h5-cp.oss-cn-shanghai.aliyuncs.com', 'qq-proj.oss-cn-beijing.aliyuncs.com'],
+  },
   reactStrictMode: true,
   poweredByHeader: false,
   generateBuildId: async () => {
