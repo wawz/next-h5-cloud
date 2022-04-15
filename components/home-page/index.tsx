@@ -23,7 +23,7 @@ const imagesData: any = {
 export default function HomePage() {
   const [hide, setHide] = useState<boolean>(true)
   const [lag, setLag] = useState<string>('')
-  const [imgSrc, setImgSrc] = useState<string>(image3)
+  const [imgSrc, setImgSrc] = useState<string>('')
   const [active, setActive] = useState<number>(-1)
   const [isSptWebp, setIsSptWebp] = useState<boolean>(true)
   const lazyRoot = useRef<any>(undefined)
@@ -42,12 +42,12 @@ export default function HomePage() {
     console.log(language, lagTypes.includes(language))
     for (let i in lagTypes) {
       const item = lagTypes[i]
-      if (language.includes(item)) {
-        setImgSrc(imagesData[item])
-        setActive(Number(i))
-        setLag(language)
-        return
-      }
+      // if (language.includes(item)) {
+      //   setImgSrc(imagesData[item])
+      //   setActive(Number(i))
+      //   setLag(language)
+      //   return
+      // }
     }
     setImgSrc(imagesData['en'])
     setActive(-1)
@@ -56,6 +56,7 @@ export default function HomePage() {
 
   const deleteMask = () => {
     console.log('loaded===>')
+    if (loading) return
     setLoading(true)
   }
 
@@ -71,15 +72,17 @@ export default function HomePage() {
         alt="clarins"
         style={{ width: '100vw', height: 'auto' }}
       /> */}
-      <Image
-        alt="clarins img"
-        src={imgSrc}
-        layout="responsive"
-        width={96}
-        height={1200}
-        loading="eager"
-        onLoadingComplete={deleteMask}
-      />
+      {imgSrc && (
+        <Image
+          alt="clarins img"
+          src={imgSrc}
+          layout="responsive"
+          width={96}
+          height={1200}
+          loading="eager"
+          onLoadingComplete={deleteMask}
+        />
+      )}
     </div>
   )
 }
