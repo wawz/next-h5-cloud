@@ -1,7 +1,9 @@
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import GoogleAnalytics from '@components/googel-analytics'
-import '@styles/global.scss'
+import GoogleAnalytics from '@components/googel-analytics';
+
+
+import '@styles/global.scss';
 
 const isProduction = process.env.NODE_ENV === 'production'
 
