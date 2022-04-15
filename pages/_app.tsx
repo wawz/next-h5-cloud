@@ -11,9 +11,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      {/* google analytics */}
-      <GoogleAnalytics />
+ 
       <Component {...pageProps} />
+           {/* google analytics */}
+      <GoogleAnalytics />
     </>
   )
 }
