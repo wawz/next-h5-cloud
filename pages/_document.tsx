@@ -5,7 +5,7 @@ function Document() {
     <Html>
       <Head>
         {/* Global Site Tag (gtag.js) - Google Analytics */}
-        {/* <script
+       <script
           async
           src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA}`}
         />
@@ -20,7 +20,7 @@ function Document() {
           });
         `,
           }}
-        /> */}
+        />
       </Head>
       <body>
         <Main />
