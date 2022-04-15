@@ -62,7 +62,7 @@ export default function HomePage() {
 
   return (
     <div
-      className={cn(ss.container, !loading && ss.mask)}
+      className={cn(ss.container, false && ss.mask)}
       ref={(ref) => (lazyRoot.current = ref)}
     >
       <div className={ss.menu}></div>

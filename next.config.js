@@ -5,10 +5,8 @@ module.exports = withImages({
   inlineImageLimit: false,
   name: '[name].[hash:8].[ext]',
   images: {
-    disableStaticImages: true
-  },
-  images: {
     domains: ['clarins-te.oss-cn-hongkong.aliyuncs.com'],
+    minimumCacheTTL: 31536000,
   },
   headers: async () => {
     return [
