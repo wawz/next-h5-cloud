@@ -1,0 +1,15 @@
+$containerWidth: 100%;
+$containerMaxWidth: 540px;
+$iphone-compensation: 0px;
+
+@mixin iPhoneX {
+  @supports (bottom: constant(safe-area-inset-bottom)) {
+    $iphone-compensation: calc(constant(safe-area-inset-bottom) - 15px) !global;
+    @content;
+  }
+
+  @supports (bottom: env(safe-area-inset-bottom)) {
+    $iphone-compensation: calc(env(safe-area-inset-bottom) - 15px) !global;
+    @content;
+  }
+}

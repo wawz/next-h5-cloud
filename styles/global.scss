@@ -1,0 +1,64 @@
+@import './vars.scss';
+
+// @font-face {
+//   font-family: 'gotham';
+//   src:
+//     url('https://clarins-ai-gam.oss-cn-shanghai.aliyuncs.com/fonts/Gotham-Medium.ttf') format('truetype');
+// }
+
+html,
+body {
+  font-family: gotham, Arial, sans-serif;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-size: 14px;
+  font-weight: 300;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+button:active,
+button:focus {
+  outline: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
+  margin: 0 0 1rem;
+}
+
+p {
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 0.5em 0;
+}
+
+html,
+body,
+div[id='__next'],
+div[id='root']
+
+/*storybook*/ {
+  height: 100%;
+}
