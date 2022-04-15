@@ -55,16 +55,7 @@ export default function HomePage() {
   return (
     <div className={ss.container}>
       <div className={ss.menu}></div>
-      {imgSrc && (
-        <Image
-          alt="clarins img"
-          src={imgSrc}
-          layout="responsive"
-          width={96}
-          height={1200}
-          priority
-        />
-      )}
+      <img src={imgSrc} alt="" style={{ width: '100vw', height: 'auto' }} />
     </div>
   )
 }
