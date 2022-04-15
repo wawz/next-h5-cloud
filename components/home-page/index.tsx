@@ -65,7 +65,6 @@ export default function HomePage() {
       ref={(ref) => (lazyRoot.current = ref)}
     >
       <div className={ss.menu}></div>
-      loading
       {/* <img
         loading="lazy"
         src={imgSrc}
