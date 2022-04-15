@@ -27,6 +27,7 @@ export default function HomePage() {
   const [active, setActive] = useState<number>(-1)
   const [isSptWebp, setIsSptWebp] = useState<boolean>(true)
   const lazyRoot = useRef<any>(undefined)
+  const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
     var language = (window.navigator.language || 'en').toLowerCase()
@@ -53,11 +54,20 @@ export default function HomePage() {
     setLag('en')
   }
 
+  const deleteMask = () => {
+    console.log('loaded===>')
+    setLoading(true)
+  }
+
   return (
-    <div className={ss.container} ref={(ref) => (lazyRoot.current = ref)}>
+    <div
+      className={cn(ss.container, !loading && ss.mask)}
+      ref={(ref) => (lazyRoot.current = ref)}
+    >
       <div className={ss.menu}></div>
       loading
       {/* <img
+        loading="lazy"
         src={imgSrc}
         alt="clarins"
         style={{ width: '100vw', height: 'auto' }}
@@ -68,7 +78,8 @@ export default function HomePage() {
         layout="responsive"
         width={96}
         height={1200}
-        priority
+        loading="eager"
+        onLoadingComplete={deleteMask}
       />
     </div>
   )
