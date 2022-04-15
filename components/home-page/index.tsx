@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState, useRef } from 'react'
 import ss from './index.module.scss'
 import Image from 'next/image'
 
@@ -23,9 +23,10 @@ const imagesData: any = {
 export default function HomePage() {
   const [hide, setHide] = useState<boolean>(true)
   const [lag, setLag] = useState<string>('')
-  const [imgSrc, setImgSrc] = useState<string>('')
+  const [imgSrc, setImgSrc] = useState<string>(image3)
   const [active, setActive] = useState<number>(-1)
   const [isSptWebp, setIsSptWebp] = useState<boolean>(true)
+  const lazyRoot = useRef<any>(undefined)
 
   useEffect(() => {
     var language = (window.navigator.language || 'en').toLowerCase()
@@ -53,9 +54,22 @@ export default function HomePage() {
   }
 
   return (
-    <div className={ss.container}>
+    <div className={ss.container} ref={(ref) => (lazyRoot.current = ref)}>
       <div className={ss.menu}></div>
-      <img src={imgSrc} alt="" style={{ width: '100vw', height: 'auto' }} />
+      loading
+      {/* <img
+        src={imgSrc}
+        alt="clarins"
+        style={{ width: '100vw', height: 'auto' }}
+      /> */}
+      <Image
+        alt="clarins img"
+        src={imgSrc}
+        layout="responsive"
+        width={96}
+        height={1200}
+        priority
+      />
     </div>
   )
 }

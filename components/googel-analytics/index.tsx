@@ -33,24 +33,6 @@ export default function GoogleAnalytics() {
         `,
         }}
       />
-       <Script src="https://cdn.bootcss.com/eruda/1.5.8/eruda.min.js"></Script>
-       <Script
-          id="e"
-          dangerouslySetInnerHTML={{
-            __html: `
-             eruda.init()
-          `,
-          >
-      </Script>
-      <Script src="https://cdn.bootcss.com/vConsole/3.3.4/vconsole.min.js"></Script>
-      <Script
-        id="vc"
-        dangerouslySetInnerHTML={{
-          __html: `
-          var vConsole = new VConsole();
-        `,
-      >
-      </Script>
     </>
   )
 }
