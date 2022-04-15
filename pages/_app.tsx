@@ -25,6 +25,22 @@ function MyApp({ Component, pageProps }: AppProps) {
           content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"
         />
       </Head>
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA}`}
+      />
+      <Script
+        id="ga"
+        dangerouslySetInnerHTML={{
+          __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${process.env.NEXT_PUBLIC_GA}', {
+            page_path: window.location.pathname,
+          });
+        `,
+        }}
+      />
       <Component {...pageProps} />
     </>
   )
