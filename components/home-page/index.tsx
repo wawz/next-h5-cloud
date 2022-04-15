@@ -125,17 +125,7 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-      {/* Slow loading due to large size */}
-<!--       {imgSrc && (
-        <Image
-          src={imgSrc}
-          layout="responsive"
-          width={96}
-          height={1200}
-          priority
-          quality={90}
-        />
-      )} -->
+
       <img src={imgSrc} style={{ width: '100%', height: 'auto' }} />
     </div>
   )
