@@ -2,7 +2,21 @@
 .container {
   padding: 0;
   margin: 0 auto;
-  max-width: $containerMaxWidth;
+}
+.tips {
+  text-align: center;
+  padding-top: 20%;
+  color: #d8877c;
+  font-size: 2em;
+  background-image: -webkit-gradient(
+    linear,
+    0 0,
+    0 bottom,
+    from(#fef2f6),
+    to(#dca6ac)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .mask {
   background-image: url('./mask.jpg');
@@ -11,6 +25,10 @@
   // opacity: 0.3;
   // transition: filter 0.5s ease;
   animation: loading 2s ease infinite;
+}
+.img {
+  width: 100vw;
+  height: auto;
 }
 @keyframes loading {
   0% {
