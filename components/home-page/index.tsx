@@ -158,7 +158,13 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          {isSptWebp ? (
+          <img
+            loading="lazy"
+            src={currentImg}
+            alt="clarins"
+            className={ss.img}
+          />
+          {/* {isSptWebp ? (
             currentImg && (
               <Image
                 alt="clarins img"
@@ -177,7 +183,7 @@ export default function HomePage() {
               alt="clarins"
               className={ss.img}
             />
-          )}
+          )} */}
         </div>
       )}
     </>
