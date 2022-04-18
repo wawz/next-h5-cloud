@@ -1,77 +1,72 @@
 import cn from 'classnames'
-import { useEffect, useLayoutEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import ss from './index.module.scss'
 import Image from 'next/image'
 
 import { check_webp_feature } from '@lib/checkwebp'
 
 interface menuType {
+  id: number
   region: string
   language: string
   imgUrl: string
   tips: string
 }
-const defaultImg: string = `${process.env.NEXT_PUBLIC_IMG_URL}assets/img_en.webp`
-const defaultTips: string = 'Please view in portrait mode in mobile'
 const initMenuList: menuType[] = [
   {
-    region: 'China',
-    language: 'cn',
+    id: 0,
+    region: 'cn',
+    language: 'CN',
     imgUrl: `${process.env.NEXT_PUBLIC_IMG_URL}assets/img_en.webp`,
     tips: '请在移动设备的纵向显示模式下浏览此页',
   },
   {
-    region: 'HK',
-    language: 'hk',
+    id: 1,
+    region: 'hk|mo',
+    language: 'HK',
     imgUrl: `${process.env.NEXT_PUBLIC_IMG_URL}assets/img_en.webp`,
     tips: '請在移動設備的縱向顯示模式下瀏覽此頁',
   },
   {
-    region: 'Macau',
-    language: 'hk',
+    id: 2,
+    region: 'tw',
+    language: 'TW',
     imgUrl: `${process.env.NEXT_PUBLIC_IMG_URL}assets/img_en.jpg`,
     tips: '請在移動設備的縱向顯示模式下瀏覽此頁',
   },
   {
-    region: 'Taiwan',
-    language: 'tw',
-    imgUrl: `${process.env.NEXT_PUBLIC_IMG_URL}assets/img_en.jpg`,
-    tips: '請在移動設備的縱向顯示模式下瀏覽此頁',
-  },
-  {
-    region: 'Japan',
-    language: 'jp',
+    id: 3,
+    region: 'jp',
+    language: 'JP',
     imgUrl: `${process.env.NEXT_PUBLIC_IMG_URL}assets/img_en.jpg`,
     tips: 'モバイルでポートレートモードで表示してください',
   },
   {
-    region: 'Pacific',
-    language: 'en',
+    id: 4,
+    region: 'sea|pacific',
+    language: 'EN',
     imgUrl: `${process.env.NEXT_PUBLIC_IMG_URL}assets/img_en.jpg`,
     tips: 'Please view in portrait mode in mobile',
   },
   {
-    region: 'SEA',
-    language: 'en',
-    imgUrl: `${process.env.NEXT_PUBLIC_IMG_URL}assets/img_en.jpg`,
-    tips: 'Please view in portrait mode in mobile',
-  },
-  {
-    region: 'Korea',
-    language: 'kr',
+    id: 5,
+    region: 'kr',
+    language: 'KR',
     imgUrl: `${process.env.NEXT_PUBLIC_IMG_URL}assets/img_en.jpg`,
     tips: '모바일에서는 세로모드로 봐주세요',
   },
 ]
+// default language set 'en'
+const defaultMenuInfo: menuType = initMenuList[4]
 
 export default function HomePage() {
   const [isMobileView, setIsMobileView] = useState<boolean>(true)
-  const [hideMenuMask, setHideMenuMask] = useState<boolean>(true)
   const [menuList, setMenuList] = useState<menuType[]>(initMenuList)
-  const [isSptWebp, setIsSptWebp] = useState<boolean>(true)
+  const [activeMenuIdx, setActiveMenuIdx] = useState<number>(-1)
   const [currentImg, setCurrentImg] = useState<string>('')
-  const [loading, setLoading] = useState<boolean>(false)
-  const [active, setActive] = useState<number>(-1)
+  const [currentLag, setCurrentLag] = useState<string>('')
+  const [isOpenMenu, setOpenMenu] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
   const [tips, setTips] = useState<string>('')
 
   useEffect(() => {
@@ -83,36 +78,40 @@ export default function HomePage() {
     // get region from link, set img_en as default img.
     const { pathname } = window.location
     const lagItem = initMenuList.filter((item) =>
-      pathname.includes(item.language)
+      pathname.includes(item.region)
     )[0]
     if (!isMobile) {
-      setTips(lagItem ? lagItem.tips : defaultTips)
+      setTips(lagItem ? lagItem.tips : defaultMenuInfo.tips)
     } else {
-      setCurrentImg(lagItem ? lagItem.imgUrl : defaultImg)
+      setCurrentImg(lagItem ? lagItem.imgUrl : defaultMenuInfo.imgUrl)
+      setCurrentLag(lagItem ? lagItem.language : defaultMenuInfo.language)
+      setActiveMenuIdx(lagItem ? lagItem.id : defaultMenuInfo.id)
       // get webp support, refresh img type
       check_webp_feature('lossy', function (feature, isSupported) {
-        setIsSptWebp(isSupported)
+        // setIsSptWebp(isSupported)
         if (!isSupported) {
           initMenuList.map((item) => {
             item.imgUrl = item.imgUrl.replace('.webp', '.jpg')
             return item
           })
           setMenuList([...initMenuList])
-          const img = (lagItem ? lagItem.imgUrl : defaultImg).replace(
-            '.webp',
-            '.jpg'
-          )
+          const img = (
+            lagItem ? lagItem.imgUrl : defaultMenuInfo.imgUrl
+          ).replace('.webp', '.jpg')
           setCurrentImg(img)
         }
       })
     }
   }, [])
 
-  const changeLag = (item: any): void => {
+  const changeLag = (item: any, index: number): void => {
+    setActiveMenuIdx(index)
+    setOpenMenu(!isOpenMenu)
     setCurrentImg(item.imgUrl)
+    setCurrentLag(item.language)
   }
 
-  const hideMask = () => {
+  const hideMask = (): void => {
     if (!loading) return
     setLoading(false)
   }
@@ -124,59 +123,41 @@ export default function HomePage() {
           <p className={ss.tips}>{tips}</p>
         </div>
       ) : (
-        <div className={cn(ss.container, loading && ss.mask)}>
-          <div className={ss.menu}>
+        <div
+          className={cn(ss.container, loading && ss.mask)}
+          style={
+            loading
+              ? {
+                  backgroundImage: `url(${process.env.NEXT_PUBLIC_IMG_URL}assets/mask.jpg)`,
+                }
+              : {}
+          }
+        >
+          <div className={ss.menuWrapper}>
             <div
-              className={cn(
-                !!hideMenuMask && ss.overlay,
-                !hideMenuMask && ss.left
-              )}
-              onClick={() => setHideMenuMask(true)}
-            ></div>
-            <div className={ss.btn} onClick={() => setHideMenuMask(false)}>
-              open
-            </div>
-            <div
-              className={cn(ss['menu-body'], hideMenuMask && ss.hidden)}
-              onClick={() => setHideMenuMask(true)}
+              onClick={() => setOpenMenu(!isOpenMenu)}
+              className={cn(ss['menu-item'], ss.currentMenuItem)}
             >
-              <div className={ss['menu-box']}>
+              {currentLag}
+            </div>
+            <div className={cn(ss.menuWrap, isOpenMenu && ss.showMenu)}>
+              <div className={ss.menuInfo}>
                 {menuList.map((item: any, index: number) => (
                   <div
                     key={index}
                     className={cn(
                       ss['menu-item'],
-                      index === active && ss.active
+                      index === activeMenuIdx && ss.active
                     )}
-                    onClick={() => changeLag(item)}
+                    onClick={() => changeLag(item, index)}
                   >
-                    <a className={ss['item-link']} href="#">
-                      {item.region}
-                    </a>
+                    {item.language}
                   </div>
                 ))}
               </div>
             </div>
           </div>
-          <img
-            loading="lazy"
-            src={currentImg}
-            alt="clarins"
-            className={ss.img}
-          />
-          {/* {isSptWebp ? (
-            currentImg && (
-              <Image
-                alt="clarins img"
-                src={currentImg}
-                layout="responsive"
-                width={96}
-                height={1200}
-                loading="eager"
-                onLoadingComplete={hideMask}
-              />
-            )
-          ) : (
+          {/* {currentImg && (
             <img
               loading="lazy"
               src={currentImg}
@@ -184,6 +165,17 @@ export default function HomePage() {
               className={ss.img}
             />
           )} */}
+          {currentImg && (
+            <Image
+              alt="clarins img"
+              src={currentImg}
+              layout="responsive"
+              width={96}
+              height={1200}
+              loading="eager"
+              onLoadingComplete={hideMask}
+            />
+          )}
         </div>
       )}
     </>
