@@ -70,7 +70,7 @@ export default function HomePage() {
   const [menuList, setMenuList] = useState<menuType[]>(initMenuList)
   const [isSptWebp, setIsSptWebp] = useState<boolean>(true)
   const [currentImg, setCurrentImg] = useState<string>('')
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(false)
   const [active, setActive] = useState<number>(-1)
   const [tips, setTips] = useState<string>('')
 
