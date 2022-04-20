@@ -1,7 +1,6 @@
 import cn from 'classnames'
 import { useEffect, useState } from 'react'
 import ss from './index.module.scss'
-import Image from 'next/image'
 
 import { check_webp_feature } from '@lib/checkwebp'
 
@@ -56,7 +55,7 @@ const initMenuList: menuType[] = [
     tips: '모바일에서는 세로모드로 봐주세요',
   },
   {
-    id: 5,
+    id: 6,
     region: 'th',
     language: 'TH',
     imgUrl: `${process.env.NEXT_PUBLIC_IMG_URL}assets/img_en.webp`,
@@ -74,7 +73,6 @@ export default function HomePage() {
   const [currentLag, setCurrentLag] = useState<string>('')
   const [isOpenMenu, setOpenMenu] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(true)
-  const [isSupprotWebp, setIsSptWebp] = useState<boolean>(false)
   const [tips, setTips] = useState<string>('')
 
   useEffect(() => {
@@ -99,7 +97,6 @@ export default function HomePage() {
       setActiveMenuIdx(lagItem ? lagItem.id : defaultMenuInfo.id)
       // get webp support, refresh img type
       check_webp_feature('lossy', function (feature, isSupported) {
-        setIsSptWebp(isSupported)
         if (!isSupported) {
           initMenuList.map((item) => {
             item.imgUrl = item.imgUrl.replace('.webp', '.jpg')
@@ -122,11 +119,6 @@ export default function HomePage() {
     setCurrentLag(item.language)
   }
 
-  const hideMask = (): void => {
-    if (!loading) return
-    setLoading(false)
-  }
-
   return (
     <>
       {!isMobileView ? (
@@ -134,16 +126,7 @@ export default function HomePage() {
           <p className={ss.tips}>{tips}</p>
         </div>
       ) : (
-        <div
-          className={cn(ss.container, loading && ss.mask)}
-          // style={
-          //   loading
-          //     ? {
-          //         backgroundImage: `url(${process.env.NEXT_PUBLIC_IMG_URL}assets/mask.jpg)`,
-          //       }
-          //     : {}
-          // }
-        >
+        <div className={cn(ss.container)}>
           <div className={ss.menuWrapper}>
             <div
               onClick={() => setOpenMenu(!isOpenMenu)}
@@ -176,18 +159,6 @@ export default function HomePage() {
               className={ss.img}
             />
           )}
-          {/* {currentImg &&(
-            <Image
-              alt="clarins img"
-              src={currentImg}
-              layout="responsive"
-              width={96}
-              height={1200}
-              loading="eager"
-              quality={60}
-              onLoadingComplete={hideMask}
-            />
-          )} */}
         </div>
       )}
     </>
