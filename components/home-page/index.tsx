@@ -168,13 +168,14 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-
-          <img
-            loading="lazy"
-            src={currentImg}
-            alt="clarins"
-            className={ss.img}
-          />
+          {currentImg && (
+            <img
+              loading="lazy"
+              src={currentImg}
+              alt="clarins"
+              className={ss.img}
+            />
+          )}
           {/* {currentImg &&(
             <Image
               alt="clarins img"
