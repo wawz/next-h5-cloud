@@ -16,7 +16,7 @@ const initMenuList: menuType[] = [
   {
     id: 0,
     region: 'cn',
-    language: 'CN',
+    language: 'SC',
     imgUrl: `${process.env.NEXT_PUBLIC_IMG_URL}assets/img_en.webp`,
     tips: '请在移动设备的纵向显示模式下浏览此页',
   },
@@ -31,29 +31,36 @@ const initMenuList: menuType[] = [
     id: 2,
     region: 'tw',
     language: 'TW',
-    imgUrl: `${process.env.NEXT_PUBLIC_IMG_URL}assets/img_en.jpg`,
+    imgUrl: `${process.env.NEXT_PUBLIC_IMG_URL}assets/img_en.webp`,
     tips: '請在移動設備的縱向顯示模式下瀏覽此頁',
   },
   {
     id: 3,
     region: 'jp',
     language: 'JP',
-    imgUrl: `${process.env.NEXT_PUBLIC_IMG_URL}assets/img_en.jpg`,
+    imgUrl: `${process.env.NEXT_PUBLIC_IMG_URL}assets/img_en.webp`,
     tips: 'モバイルでポートレートモードで表示してください',
   },
   {
     id: 4,
     region: 'sea|pacific',
     language: 'EN',
-    imgUrl: `${process.env.NEXT_PUBLIC_IMG_URL}assets/img_en.jpg`,
+    imgUrl: `${process.env.NEXT_PUBLIC_IMG_URL}assets/img_en.webp`,
     tips: 'Please view in portrait mode in mobile',
   },
   {
     id: 5,
     region: 'kr',
     language: 'KR',
-    imgUrl: `${process.env.NEXT_PUBLIC_IMG_URL}assets/img_en.jpg`,
+    imgUrl: `${process.env.NEXT_PUBLIC_IMG_URL}assets/img_en.webp`,
     tips: '모바일에서는 세로모드로 봐주세요',
+  },
+  {
+    id: 5,
+    region: 'th',
+    language: 'TH',
+    imgUrl: `${process.env.NEXT_PUBLIC_IMG_URL}assets/img_en.webp`,
+    tips: 'โปรดดูในโหมดแนวตั้งในมือถือ',
   },
 ]
 // default language set 'en'
@@ -67,6 +74,7 @@ export default function HomePage() {
   const [currentLag, setCurrentLag] = useState<string>('')
   const [isOpenMenu, setOpenMenu] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(true)
+  const [isSupprotWebp, setIsSptWebp] = useState<boolean>(false)
   const [tips, setTips] = useState<string>('')
 
   useEffect(() => {
@@ -77,9 +85,12 @@ export default function HomePage() {
     setIsMobileView(isMobile)
     // get region from link, set img_en as default img.
     const { pathname } = window.location
-    const lagItem = initMenuList.filter((item) =>
-      pathname.includes(item.region)
-    )[0]
+    const lagItem = pathname
+      ? initMenuList.filter((item) => {
+          const regions = item.region.split('|')
+          return regions.find((lg) => pathname.includes(lg))
+        })[0]
+      : false
     if (!isMobile) {
       setTips(lagItem ? lagItem.tips : defaultMenuInfo.tips)
     } else {
@@ -88,7 +99,7 @@ export default function HomePage() {
       setActiveMenuIdx(lagItem ? lagItem.id : defaultMenuInfo.id)
       // get webp support, refresh img type
       check_webp_feature('lossy', function (feature, isSupported) {
-        // setIsSptWebp(isSupported)
+        setIsSptWebp(isSupported)
         if (!isSupported) {
           initMenuList.map((item) => {
             item.imgUrl = item.imgUrl.replace('.webp', '.jpg')
@@ -125,13 +136,13 @@ export default function HomePage() {
       ) : (
         <div
           className={cn(ss.container, loading && ss.mask)}
-          style={
-            loading
-              ? {
-                  backgroundImage: `url(${process.env.NEXT_PUBLIC_IMG_URL}assets/mask.jpg)`,
-                }
-              : {}
-          }
+          // style={
+          //   loading
+          //     ? {
+          //         backgroundImage: `url(${process.env.NEXT_PUBLIC_IMG_URL}assets/mask.jpg)`,
+          //       }
+          //     : {}
+          // }
         >
           <div className={ss.menuWrapper}>
             <div
@@ -157,15 +168,14 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          {/* {currentImg && (
-            <img
-              loading="lazy"
-              src={currentImg}
-              alt="clarins"
-              className={ss.img}
-            />
-          )} */}
-          {currentImg && (
+
+          <img
+            loading="lazy"
+            src={currentImg}
+            alt="clarins"
+            className={ss.img}
+          />
+          {/* {currentImg &&(
             <Image
               alt="clarins img"
               src={currentImg}
@@ -173,9 +183,10 @@ export default function HomePage() {
               width={96}
               height={1200}
               loading="eager"
+              quality={60}
               onLoadingComplete={hideMask}
             />
-          )}
+          )} */}
         </div>
       )}
     </>

@@ -20,13 +20,12 @@
 .menuWrapper {
   position: fixed;
   top: 17px;
-  right: 20px;
+  left: 20px;
   z-index: 9999;
-  font-size: 0;
+  font-size: 14px;
   .menu-item {
     width: 62px;
     height: 30px;
-    font-size: 14px;
     font-family: PingFangSC;
     color: #b40024;
     line-height: 30px;
@@ -106,7 +105,7 @@
   // filter: blur(20px);
   // opacity: 0.3;
   // transition: filter 0.5s ease;
-  animation: loading 2s ease infinite;
+  animation: loading 0.5s ease;
 }
 .img {
   width: 100vw;
@@ -115,15 +114,21 @@
 @keyframes loading {
   0% {
     filter: blur(8px);
-    opacity: 0.3;
   }
 
   50% {
     opacity: 0.4;
   }
 
+  99% {
+    filter: blur(6px);
+    opacity: 0.4;
+    height: 100%;
+  }
+
   100% {
-    filter: blur(4px);
-    opacity: 0.5;
+    filter: blur(6px);
+    opacity: 0.4;
+    height: 0;
   }
 }
